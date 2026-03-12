@@ -5,7 +5,7 @@ VisualStudioVersion = 17.14.36811.4 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{19C0F45E-3DD9-4182-B447-949348DC3910}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Businnes", "Businnes\Businnes.csproj", "{A2127782-6B66-4000-BA48-63ECDC1B60F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Businnes\Business.csproj", "{A2127782-6B66-4000-BA48-63ECDC1B60F0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{5A8D8E2E-1AA4-4043-8C59-BABC7EAABDA9}"
 EndProject
