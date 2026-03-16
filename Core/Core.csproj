@@ -54,7 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstracts\Bases\BaseEntity.cs" />
     <Compile Include="Concrete\Entities\ApplicationUser.cs" />
+    <Compile Include="Concrete\Entities\Member.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
