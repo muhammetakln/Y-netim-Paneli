@@ -12,10 +12,14 @@ namespace Business.Services
 {
     public class PostService : IPostService
     {
-        private readonly ApplicationDbContext context = ApplicationDbContext.Create();
+        // DÜZELTME 4: Context field olarak tutmak yerine constructor'da oluşturuluyor
+        // böylece her PostService instance'ı kendi context'ini yönetir
+        private readonly ApplicationDbContext context;
         private readonly IUnitOfWork unitOfWork;
+
         public PostService()
         {
+            context = ApplicationDbContext.Create();
             unitOfWork = new UnitOfWork(context);
         }
 
@@ -32,30 +36,29 @@ namespace Business.Services
             };
             unitOfWork.PostRepository.Create(post);
             unitOfWork.Commit();
-
-
         }
 
         public void DeletePost(int id, string authorId)
         {
             var post = unitOfWork.PostRepository.ReadById(id);
-            if (post!= null && post.AuthorId==authorId) 
+            if (post != null && post.AuthorId == authorId)
             {
                 post.Active = false;
                 post.Deleted = true;
                 unitOfWork.PostRepository.Update(post);
                 unitOfWork.Commit();
-
+                // DÜZELTME 1: Silme işleminden sonra yanlışlıkla Create+Commit yapılıyordu.
+                // O iki satır kaldırıldı.
             }
-            unitOfWork.PostRepository.Create(post);
-            unitOfWork.Commit();
-
         }
 
         public PostDetailDto GetPostDetail(int id)
         {
             var post = unitOfWork.PostRepository.ReadById(id);
-            if (post == null)
+
+            // DÜZELTME 2: Koşul ters yazılmıştı. post == null iken post'tan veri okumaya
+            // çalışılıyordu (NullReferenceException). Düzeltildi: post != null iken dön.
+            if (post != null)
             {
                 return new PostDetailDto
                 {
@@ -63,20 +66,18 @@ namespace Business.Services
                     Title = post.Title,
                     Content = post.Content,
                     AuthorId = post.AuthorId,
-                    AuthorName = $"{post.Author.FirstName}{post.Author.LastName}",
+                    AuthorName = $"{post.Author.FirstName} {post.Author.LastName}",
                     CoverImageUrl = post.CoverImageUrl,
                     PublishDate = post.PublishDate,
                     Tags = post.Tags.Select(x => x.Name).ToArray(),
-
                 };
-
             }
             return null;
         }
 
         public IEnumerable<PostListItemDto> GetPostList()
         {
-            var posts = unitOfWork.PostRepository.ReadMany(null,"Tags","Author");
+            var posts = unitOfWork.PostRepository.ReadMany(null, "Tags", "Author");
             return from post in posts
                    select new PostListItemDto
                    {
@@ -84,12 +85,10 @@ namespace Business.Services
                        Title = post.Title,
                        ShortContent = post.Content,
                        AuthorId = post.AuthorId,
-                       AuthorName = $"{post.Author.FirstName}{post.Author.LastName}",
+                       AuthorName = $"{post.Author.FirstName} {post.Author.LastName}",
                        CoverImageUrl = post.CoverImageUrl,
                        PublishDate = post.PublishDate,
                        Tags = post.Tags.Select(x => x.Name).ToArray(),
-
-                       
                    };
         }
 
@@ -101,10 +100,10 @@ namespace Business.Services
                 post.Title = updatedPost.Title;
                 post.Content = updatedPost.Content;
                 post.CoverImageUrl = updatedPost.CoverImageUrl;
-                post.PublishDate= DateTime.Now;
+                post.PublishDate = DateTime.Now;
                 post.Active = !updatedPost.IsDraft;
                 unitOfWork.PostRepository.Update(post);
-
+                unitOfWork.Commit(); // DÜZELTME 3: Commit eksikti, değişiklikler kaydedilmiyordu.
             }
         }
     }
