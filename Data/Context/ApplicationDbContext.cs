@@ -1,7 +1,8 @@
 ﻿using Core.Concrete.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Entity;
 
-namespace Data.Context
+namespace Data.Contexts
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -14,6 +15,8 @@ namespace Data.Context
         {
             return new ApplicationDbContext();
         }
+        public virtual DbSet<Post>Posts  { get; set; }
+        public virtual DbSet<Tag> Tags { get; set; }
     }
 
 

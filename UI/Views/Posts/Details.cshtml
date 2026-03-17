@@ -1,0 +1,66 @@
+﻿@model Core.Concrete.DTOs.PostDetailDto
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PostDetailDto</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthorId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuthorId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthorName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AuthorName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CoverImageUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CoverImageUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PublishDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PublishDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
