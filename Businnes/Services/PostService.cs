@@ -56,8 +56,6 @@ namespace Business.Services
         {
             var post = unitOfWork.PostRepository.ReadById(id);
 
-            // DÜZELTME 2: Koşul ters yazılmıştı. post == null iken post'tan veri okumaya
-            // çalışılıyordu (NullReferenceException). Düzeltildi: post != null iken dön.
             if (post != null)
             {
                 return new PostDetailDto
@@ -75,9 +73,28 @@ namespace Business.Services
             return null;
         }
 
-        public IEnumerable<PostListItemDto> GetPostList()
+        public UpDatePostDto GetPostEdit(int id)
         {
-            var posts = unitOfWork.PostRepository.ReadMany(null, "Tags", "Author");
+            var post = unitOfWork.PostRepository.ReadById(id);
+
+            if (post != null)
+            {
+                return new UpDatePostDto
+                {
+                    Id = post.Id,
+                    Title = post.Title,
+                    Content = post.Content,
+                    AuthorId = post.AuthorId,
+                    CoverImageUrl = post.CoverImageUrl,
+                    IsDraft=!post.Active
+                };
+            }
+            return null;
+        }
+
+        public IEnumerable<PostListItemDto> GetPostList(string authorId)
+        {
+            var posts = unitOfWork.PostRepository.ReadMany(x=>x.AuthorId==authorId, "Tags", "Author");
             return from post in posts
                    select new PostListItemDto
                    {

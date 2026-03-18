@@ -349,13 +349,15 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_MenuPartial.cshtml" />
-    <Content Include="Views\Shared\_NavPartial.cshtml" />
     <Content Include="Views\Shared\_AuthLayout.cshtml" />
     <Content Include="Scripts\jquery-3.7.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.1.min.map" />
     <Content Include="Views\Posts\Details.cshtml" />
     <Content Include="Views\Posts\Index.cshtml" />
-    <Content Include="Views\Shared\_SiderbarMenu.cshtml" />
+    <Content Include="Views\Posts\Create.cshtml" />
+    <Content Include="Views\Posts\Delete.cshtml" />
+    <Content Include="Views\Posts\Edit.cshtml" />
+    <Content Include="Views\Shared\_NavPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
