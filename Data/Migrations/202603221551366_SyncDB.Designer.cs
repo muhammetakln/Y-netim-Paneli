@@ -7,13 +7,13 @@ namespace Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.5.1")]
-    public sealed partial class SyncProjectTables1 : IMigrationMetadata
+    public sealed partial class SyncDB : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(SyncProjectTables1));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(SyncDB));
         
         string IMigrationMetadata.Id
         {
-            get { return "202603221535519_SyncProjectTables1"; }
+            get { return "202603221551366_SyncDB"; }
         }
         
         string IMigrationMetadata.Source

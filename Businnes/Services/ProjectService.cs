@@ -20,20 +20,24 @@ namespace Businnes.Services
         }
 
         // ✅ GET PROJECT LIST
-        public IEnumerable<ProjectLisItemDto> GetProjectList(string authorId)
+        public IEnumerable<ProjectListItemDto> GetProjectList(string authorId)
         {
             try
             {
                 var projects = db.Projects
                     .Where(p => p.IsDeleted == false)
                     .OrderByDescending(p => p.CreatedAt)
-                    .Select(p => new ProjectLisItemDto
+                    .Select(p => new ProjectListItemDto
                     {
                         Id = p.Id,
                         Title = p.Title,
                         Slug = p.Slug,
                         Description = p.Description,
-                        Content = p.Content
+                        Content = p.Content,
+                        CoverImageUrl = p.CoverImageUrl,
+                        IsActive = p.IsActive,
+                        IsFeatured = p.IsFeatured,
+                        CreatedAt = p.CreatedAt
                     })
                     .ToList();
 
@@ -42,7 +46,7 @@ namespace Businnes.Services
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"GetProjectList Error: {ex.Message}");
-                return new List<ProjectLisItemDto>();
+                return new List<ProjectListItemDto>();
             }
         }
 
@@ -107,10 +111,6 @@ namespace Businnes.Services
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine("=== CREATE PROJECT ===");
-                System.Diagnostics.Debug.WriteLine($"Title: {newProjectDto.Title}");
-                System.Diagnostics.Debug.WriteLine($"CategoryId: {newProjectDto.CategoryId}");
-
                 var project = new Project
                 {
                     Title = newProjectDto.Title,
@@ -135,17 +135,14 @@ namespace Businnes.Services
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"CreateProject Error: {ex.Message}");
-
                 if (ex.InnerException != null)
                 {
                     System.Diagnostics.Debug.WriteLine($"Inner: {ex.InnerException.Message}");
-
                     if (ex.InnerException.InnerException != null)
                     {
                         System.Diagnostics.Debug.WriteLine($"Inner Inner: {ex.InnerException.InnerException.Message}");
                     }
                 }
-
                 throw;
             }
         }
@@ -169,7 +166,6 @@ namespace Businnes.Services
                 project.Description = updateProjectDto.Description;
                 project.Content = updateProjectDto.Content;
 
-                // Sadece yeni resim varsa güncelle
                 if (!string.IsNullOrEmpty(updateProjectDto.CoverImageUrl))
                 {
                     project.CoverImageUrl = updateProjectDto.CoverImageUrl;
@@ -181,8 +177,6 @@ namespace Businnes.Services
                 project.UpdatedAt = DateTime.Now;
 
                 db.SaveChanges();
-
-                System.Diagnostics.Debug.WriteLine($"Project Updated: {project.Title}");
             }
             catch (Exception ex)
             {
@@ -191,7 +185,7 @@ namespace Businnes.Services
             }
         }
 
-        // ✅ DELETE PROJECT (Soft Delete)
+        // ✅ DELETE PROJECT
         public void DeleteProject(int id, string authorId)
         {
             try
@@ -203,13 +197,10 @@ namespace Businnes.Services
                     throw new Exception("Project not found");
                 }
 
-                // Soft delete
                 project.IsDeleted = true;
                 project.UpdatedAt = DateTime.Now;
 
                 db.SaveChanges();
-
-                System.Diagnostics.Debug.WriteLine($"Project Deleted: {project.Title}");
             }
             catch (Exception ex)
             {
@@ -243,16 +234,14 @@ namespace Businnes.Services
             }
         }
 
-        // ✅ HELPER: Generate Slug
+        // ✅ SLUG GENERATOR
         private string GenerateSlug(string title)
         {
             if (string.IsNullOrEmpty(title))
                 return string.Empty;
 
-            // Küçük harfe çevir
             string slug = title.ToLowerInvariant();
 
-            // Türkçe karakterleri değiştir
             slug = slug.Replace("ı", "i")
                        .Replace("ğ", "g")
                        .Replace("ü", "u")
@@ -260,25 +249,16 @@ namespace Businnes.Services
                        .Replace("ö", "o")
                        .Replace("ç", "c");
 
-            // Özel karakterleri kaldır
             slug = System.Text.RegularExpressions.Regex.Replace(slug, @"[^a-z0-9\s-]", "");
-
-            // Birden fazla boşluğu tek boşluğa çevir
             slug = System.Text.RegularExpressions.Regex.Replace(slug, @"\s+", " ").Trim();
-
-            // Boşlukları tire yap
             slug = System.Text.RegularExpressions.Regex.Replace(slug, @"\s", "-");
 
             return slug;
         }
 
-        // ✅ DISPOSE
         public void Dispose()
         {
-            if (db != null)
-            {
-                db.Dispose();
-            }
+            db?.Dispose();
         }
     }
 }

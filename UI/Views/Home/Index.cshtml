@@ -1,33 +1,254 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Dashboard";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+<div class="container-xxl flex-grow-1 container-p-y">
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+    @* Header *@
+    <div class="row mb-4">
+        <div class="col-12">
+            <h4 class="fw-bold py-3 mb-4">
+                <span class="text-muted fw-light">Admin Panel /</span> Dashboard
+            </h4>
+        </div>
     </div>
-</main>
+
+    @* Stats Cards *@
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div class="card-info">
+                            <p class="card-text">Total Posts</p>
+                            <div class="d-flex align-items-end mb-2">
+                                <h4 class="card-title mb-0 me-2">@ViewBag.TotalPosts</h4>
+                            </div>
+                        </div>
+                        <div class="card-icon">
+                            <span class="badge bg-label-primary rounded p-2">
+                                <i class='bx bx-file bx-sm'></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div class="card-info">
+                            <p class="card-text">Total Projects</p>
+                            <div class="d-flex align-items-end mb-2">
+                                <h4 class="card-title mb-0 me-2">@ViewBag.TotalProjects</h4>
+                            </div>
+                        </div>
+                        <div class="card-icon">
+                            <span class="badge bg-label-success rounded p-2">
+                                <i class='bx bx-briefcase bx-sm'></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div class="card-info">
+                            <p class="card-text">Active Users</p>
+                            <div class="d-flex align-items-end mb-2">
+                                <h4 class="card-title mb-0 me-2">@ViewBag.TotalUsers</h4>
+                            </div>
+                        </div>
+                        <div class="card-icon">
+                            <span class="badge bg-label-info rounded p-2">
+                                <i class='bx bx-user bx-sm'></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div class="card-info">
+                            <p class="card-text">Categories</p>
+                            <div class="d-flex align-items-end mb-2">
+                                <h4 class="card-title mb-0 me-2">@ViewBag.TotalCategories</h4>
+                            </div>
+                        </div>
+                        <div class="card-icon">
+                            <span class="badge bg-label-warning rounded p-2">
+                                <i class='bx bx-category bx-sm'></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Recent Posts *@
+    <div class="row mb-4">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="card-title m-0 me-2">Recent Posts</h5>
+                    <a href="@Url.Action("Index", "Posts")" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.RecentPosts != null && ((IEnumerable<dynamic>)ViewBag.RecentPosts).Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    @foreach (var post in ViewBag.RecentPosts)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    @if (!string.IsNullOrEmpty(post.CoverImageUrl) && post.CoverImageUrl.StartsWith("/uploads/"))
+                                                    {
+                                                        <img src="@post.CoverImageUrl" alt="@post.Title" class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="avatar avatar-sm me-3 bg-label-primary">
+                                                            <span class="avatar-initial rounded">
+                                                                <i class='bx bx-file'></i>
+                                                            </span>
+                                                        </div>
+                                                    }
+                                                    <div>
+                                                        <h6 class="mb-0">@post.Title</h6>
+                                                        <small class="text-muted">@post.PublishDate.ToString("MMM dd, yyyy")</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-end">
+                                                <a href="@Url.Action("Details", "Posts", new { id = post.Id })" class="btn btn-sm btn-icon btn-outline-primary">
+                                                    <i class='bx bx-show'></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class='bx bx-file bx-lg text-muted'></i>
+                            <p class="text-muted mt-2">No posts yet</p>
+                            <a href="@Url.Action("Create", "Posts")" class="btn btn-sm btn-primary">Create First Post</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @* Recent Projects *@
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="card-title m-0 me-2">Recent Projects</h5>
+                    <a href="@Url.Action("Index", "Projects")" class="btn btn-sm btn-outline-success">View All</a>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.RecentProjects != null && ((IEnumerable<dynamic>)ViewBag.RecentProjects).Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    @foreach (var project in ViewBag.RecentProjects)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    @if (!string.IsNullOrEmpty(project.CoverImageUrl) && project.CoverImageUrl.StartsWith("/uploads/"))
+                                                    {
+                                                        <img src="@project.CoverImageUrl" alt="@project.Title" class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="avatar avatar-sm me-3 bg-label-success">
+                                                            <span class="avatar-initial rounded">
+                                                                <i class='bx bx-briefcase'></i>
+                                                            </span>
+                                                        </div>
+                                                    }
+                                                    <div>
+                                                        <h6 class="mb-0">@project.Title</h6>
+                                                        <small class="text-muted">@project.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-end">
+                                                <a href="@Url.Action("Details", "Projects", new { id = project.Id })" class="btn btn-sm btn-icon btn-outline-success">
+                                                    <i class='bx bx-show'></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class='bx bx-briefcase bx-lg text-muted'></i>
+                            <p class="text-muted mt-2">No projects yet</p>
+                            <a href="@Url.Action("Create", "Projects")" class="btn btn-sm btn-success">Create First Project</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* Quick Actions *@
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title m-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("Create", "Posts")" class="btn btn-outline-primary w-100">
+                                <i class='bx bx-plus me-1'></i> New Post
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("Create", "Projects")" class="btn btn-outline-success w-100">
+                                <i class='bx bx-plus me-1'></i> New Project
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("Index", "Manage")" class="btn btn-outline-secondary w-100">
+                                <i class='bx bx-cog me-1'></i> Settings
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="@Url.Action("About", "Home")" class="btn btn-outline-info w-100">
+                                <i class='bx bx-info-circle me-1'></i> About
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

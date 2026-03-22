@@ -1,6 +1,7 @@
 ﻿using Core.Abstracts;
 using Core.Abstracts.IServices;
 using Core.Concrete.DTOs;
+using Core.Concrete.DTOS;
 using Core.Concrete.Entities;
 using Data;
 using Data.Contexts;
@@ -32,7 +33,7 @@ namespace Business.Services
                 CoverImageUrl = newPost.CoverImageUrl,
                 Title = newPost.Title,
                 PublishDate = DateTime.Now,
-                Active = false
+                IsActive = false
             };
             unitOfWork.PostRepository.Create(post);
             unitOfWork.Commit();
@@ -43,8 +44,8 @@ namespace Business.Services
             var post = unitOfWork.PostRepository.ReadById(id);
             if (post != null && post.AuthorId == authorId)
             {
-                post.Active = false;
-                post.Deleted = true;
+                post.IsActive = false;
+                post.IsDeleted = true;
                 unitOfWork.PostRepository.Update(post);
                 unitOfWork.Commit();
                 // DÜZELTME 1: Silme işleminden sonra yanlışlıkla Create+Commit yapılıyordu.
@@ -86,29 +87,13 @@ namespace Business.Services
                     Content = post.Content,
                     AuthorId = post.AuthorId,
                     CoverImageUrl = post.CoverImageUrl,
-                    IsDraft=!post.Active
+                    IsDraft=!post.IsActive
                 };
             }
             return null;
         }
 
-        public IEnumerable<PostListItemDto> GetPostList(string authorId)
-        {
-            var posts = unitOfWork.PostRepository.ReadMany(x=>x.AuthorId==authorId, "Tags", "Author");
-            return from post in posts
-                   select new PostListItemDto
-                   {
-                       Id = post.Id,
-                       Title = post.Title,
-                       ShortContent = post.Content,
-                       AuthorId = post.AuthorId,
-                       AuthorName = $"{post.Author.FirstName} {post.Author.LastName}",
-                       CoverImageUrl = post.CoverImageUrl,
-                       PublishDate = post.PublishDate,
-                       Tags = post.Tags.Select(x => x.Name).ToArray(),
-                   };
-        }
-
+      
         public void UpdatePost(UpDatePostDto updatedPost)
         {
             var post = unitOfWork.PostRepository.ReadById(updatedPost.Id);
@@ -118,10 +103,22 @@ namespace Business.Services
                 post.Content = updatedPost.Content;
                 post.CoverImageUrl = updatedPost.CoverImageUrl;
                 post.PublishDate = DateTime.Now;
-                post.Active = !updatedPost.IsDraft;
+                post.IsActive = !updatedPost.IsDraft;
                 unitOfWork.PostRepository.Update(post);
                 unitOfWork.Commit(); // DÜZELTME 3: Commit eksikti, değişiklikler kaydedilmiyordu.
             }
+        }
+
+        IEnumerable<PostListItemDto> IPostService.GetPostList(string authorId)
+        {
+            var posts = unitOfWork.PostRepository.ReadMany(x => x.AuthorId == authorId, "Tags", "Author");
+            return from post in posts
+                   select new PostListItemDto
+                   {
+                       Id = post.Id,
+                       Title = post.Title,
+
+                   };
         }
     }
 }

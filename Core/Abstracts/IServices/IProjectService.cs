@@ -7,9 +7,9 @@ namespace Core.Abstracts.IServices
     public interface IProjectService
     {
         // List
-        IEnumerable<ProjectLisItemDto> GetProjectList(string authorId);
+        IEnumerable<ProjectListItemDto> GetProjectList(string authorId);
 
-        // Detail
+        // Detail  
         ProjectCategoryDto GetProjectDetail(int id);
 
         // Edit için

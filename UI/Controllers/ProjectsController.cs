@@ -35,7 +35,7 @@ namespace UI.Controllers
             {
                 System.Diagnostics.Debug.WriteLine($"Index Error: {ex.Message}");
                 ViewBag.ErrorMessage = ex.Message;
-                return View(new List<ProjectLisItemDto>());
+                return View(new List<ProjectListItemDto>());
             }
         }
 

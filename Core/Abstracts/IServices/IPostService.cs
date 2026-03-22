@@ -1,4 +1,5 @@
 ﻿using Core.Concrete.DTOs;
+using Core.Concrete.DTOS;
 using System.Collections.Generic;
 
 namespace Core.Abstracts.IServices
