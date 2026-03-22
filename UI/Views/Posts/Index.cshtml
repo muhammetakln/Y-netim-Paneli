@@ -1,56 +1,240 @@
 ﻿@model IEnumerable<Core.Concrete.DTOs.PostListItemDto>
-
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Posts";
 }
-<div class="card">
-    <div class="card-header">
-        <h2>Post List</h2>
-        <p>
-            <a href="@Url.Action("create","posts")" class="btn btn-outline-primary btn-sm">Create New</a>
-        </p>
+
+<h4 class="fw-bold py-3 mb-4">
+    <span class="text-muted fw-light">Content /</span> Posts
+</h4>
+
+<div class="row">
+    <!-- Left Side - Posts List -->
+    <div class="col-lg-8 col-md-12 mb-4">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="bx bx-file me-2"></i>
+                    All Posts
+                </h5>
+                <a href="@Url.Action("Create", "Posts")" class="btn btn-primary">
+                    <i class="bx bx-plus me-1"></i> New Post
+                </a>
+            </div>
+            <div class="card-body p-0">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible m-3">
+                        <i class="bx bx-check-circle me-2"></i>
+                        @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger alert-dismissible m-3">
+                        <i class="bx bx-error-circle me-2"></i>
+                        @ViewBag.ErrorMessage
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                @if (Model == null || !Model.Any())
+                {
+                    <div class="alert alert-info m-3">
+                        <i class="bx bx-info-circle me-2"></i>
+                        No posts yet. <a href="@Url.Action("Create")">Create your first post</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width: 100px;">Image</th>
+                                    <th>Title</th>
+                                    <th>Summary</th>
+                                    <th style="width: 120px;">Date</th>
+                                    <th style="width: 140px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @* ✅ GÜVENLİ RESİM GÖSTERİMİ *@
+                                            @if (!string.IsNullOrEmpty(item.CoverImageUrl) && item.CoverImageUrl.StartsWith("/uploads/"))
+                                            {
+                                                @* Local dosya - göster *@
+                                                <img src="@item.CoverImageUrl"
+                                                     alt="@item.Title"
+                                                     class="rounded"
+                                                     style="width: 60px; height: 60px; object-fit: cover;"
+                                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                                                <div class="bg-light d-flex align-items-center justify-content-center rounded"
+                                                     style="width: 60px; height: 60px; display: none;">
+                                                    <i class="bx bx-image-alt text-danger" style="font-size: 24px;" title="Image not found"></i>
+                                                </div>
+                                            }
+                                            else if (!string.IsNullOrEmpty(item.CoverImageUrl) && (item.CoverImageUrl.StartsWith("http://") || item.CoverImageUrl.StartsWith("https://")))
+                                            {
+                                                @* Harici URL - placeholder göster *@
+                                                <div class="bg-warning bg-opacity-10 d-flex align-items-center justify-content-center rounded"
+                                                     style="width: 60px; height: 60px;"
+                                                     title="External URL: @item.CoverImageUrl">
+                                                    <i class="bx bx-globe text-warning" style="font-size: 24px;"></i>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                @* Resim yok - placeholder *@
+                                                <div class="bg-light d-flex align-items-center justify-content-center rounded"
+                                                     style="width: 60px; height: 60px;">
+                                                    <i class="bx bx-image text-muted" style="font-size: 24px;"></i>
+                                                </div>
+                                            }
+                                        </td>
+                                        <td>
+                                            <strong>@item.Title</strong>
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">
+                                                @if (!string.IsNullOrEmpty(item.ShortContent))
+                                                {
+                                                    @(item.ShortContent.Length > 80 ? item.ShortContent.Substring(0, 80) + "..." : item.ShortContent)
+                                                }
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">
+                                                <i class="bx bx-calendar me-1"></i>
+                                                @item.PublishDate.ToString("dd.MM.yyyy")
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a href="@Url.Action("Details", "Posts", new { id = item.Id })"
+                                                   class="btn btn-sm btn-outline-info"
+                                                   title="Details">
+                                                    <i class="bx bx-show"></i>
+                                                </a>
+                                                <a href="@Url.Action("Edit", "Posts", new { id = item.Id })"
+                                                   class="btn btn-sm btn-outline-warning"
+                                                   title="Edit">
+                                                    <i class="bx bx-edit"></i>
+                                                </a>
+                                                <a href="@Url.Action("Delete", "Posts", new { id = item.Id })"
+                                                   class="btn btn-sm btn-outline-danger"
+                                                   title="Delete">
+                                                    <i class="bx bx-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
-    <div class="card-body p-0">
-        <table class="table table-striped table-hover">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ShortContent)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CoverImageUrl)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PublishDate)
-                </th>
-                <th></th>
-            </tr>
 
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ShortContent)
-                    </td>
-                    <td>
-                        <img src="@item.CoverImageUrl" alt="@item.Title" class="img-thumbnail" width="100" />
-                    </td>
-                    <td>
-                        @item.PublishDate.ToLongDateString()
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                    </td>
-                </tr>
-            }
+    <!-- Right Side - Info Cards -->
+    <div class="col-lg-4 col-md-12 mb-4">
+        <!-- Statistics -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bx bx-bar-chart me-2"></i>
+                    Statistics
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="avatar flex-shrink-0 me-3">
+                        <span class="avatar-initial rounded bg-label-primary">
+                            <i class="bx bx-file"></i>
+                        </span>
+                    </div>
+                    <div class="flex-grow-1">
+                        <small class="text-muted d-block">Total Posts</small>
+                        <h4 class="mb-0">@(Model?.Count() ?? 0)</h4>
+                    </div>
+                </div>
 
-        </table>
+                <div class="d-flex align-items-center mb-3">
+                    <div class="avatar flex-shrink-0 me-3">
+                        <span class="avatar-initial rounded bg-label-success">
+                            <i class="bx bx-calendar"></i>
+                        </span>
+                    </div>
+                    <div class="flex-grow-1">
+                        <small class="text-muted d-block">This Month</small>
+                        <h4 class="mb-0">@(Model?.Count(p => p.PublishDate.Month == DateTime.Now.Month) ?? 0)</h4>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center">
+                    <div class="avatar flex-shrink-0 me-3">
+                        <span class="avatar-initial rounded bg-label-info">
+                            <i class="bx bx-image"></i>
+                        </span>
+                    </div>
+                    <div class="flex-grow-1">
+                        <small class="text-muted d-block">With Images</small>
+                        <h4 class="mb-0">@(Model?.Count(p => !string.IsNullOrEmpty(p.CoverImageUrl) && p.CoverImageUrl.StartsWith("/uploads/")) ?? 0)</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bx bx-bolt me-2"></i>
+                    Quick Actions
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="@Url.Action("Create", "Posts")" class="btn btn-primary">
+                        <i class="bx bx-plus me-1"></i>
+                        Create New Post
+                    </a>
+                    <button class="btn btn-outline-secondary" onclick="window.location.reload()">
+                        <i class="bx bx-refresh me-1"></i>
+                        Refresh List
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bx bx-help-circle me-2"></i>
+                    Help
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="small text-muted mb-2">
+                    <i class="bx bx-info-circle me-1"></i>
+                    Posts are used for blog articles or news.
+                </p>
+                <p class="small text-muted mb-2">
+                    <i class="bx bx-image me-1"></i>
+                    You can add a cover image to each post.
+                </p>
+                <p class="small text-muted mb-0">
+                    <i class="bx bx-upload me-1"></i>
+                    Images must be uploaded locally (max 2MB).
+                </p>
+            </div>
+        </div>
     </div>
 </div>

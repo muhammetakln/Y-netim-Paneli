@@ -59,15 +59,28 @@
   <ItemGroup>
     <Compile Include="Abstracts\Bases\BaseEntity.cs" />
     <Compile Include="Abstracts\IRepositories\IPostRepository.cs" />
+    <Compile Include="Abstracts\IRepositories\IProjectCategoryRepository.cs" />
+    <Compile Include="Abstracts\IRepositories\IProjectImageRepository.cs" />
+    <Compile Include="Abstracts\IRepositories\IProjectRepository.cs" />
     <Compile Include="Abstracts\IRepositories\ITagRepository.cs" />
     <Compile Include="Abstracts\IServices\IPostService.cs" />
+    <Compile Include="Abstracts\IServices\IProjectService.cs" />
     <Compile Include="Abstracts\IUnitOfWork.cs" />
     <Compile Include="Concrete\DTOS\NewPostDto.cs" />
+    <Compile Include="Concrete\DTOS\NewProjectDto.cs" />
     <Compile Include="Concrete\DTOS\PostDetailDto.cs" />
     <Compile Include="Concrete\DTOS\PostListItemDto.cs" />
+    <Compile Include="Concrete\DTOS\ProjectCategoryDto.cs" />
+    <Compile Include="Concrete\DTOS\ProjectDetailDto.cs" />
+    <Compile Include="Concrete\DTOS\ProjectImageDto.cs" />
+    <Compile Include="Concrete\DTOS\ProjectLisİtemDto.cs" />
     <Compile Include="Concrete\DTOS\UpDatePostDto.cs" />
+    <Compile Include="Concrete\DTOS\UpDateProjectDto.cs" />
     <Compile Include="Concrete\Entities\ApplicationUser.cs" />
     <Compile Include="Concrete\Entities\Post.cs" />
+    <Compile Include="Concrete\Entities\Project.cs" />
+    <Compile Include="Concrete\Entities\ProjectCategory.cs" />
+    <Compile Include="Concrete\Entities\ProjectImage.cs" />
     <Compile Include="Concrete\Entities\Tag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

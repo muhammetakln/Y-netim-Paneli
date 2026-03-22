@@ -62,9 +62,32 @@
     <Compile Include="Migrations\202603180828339_Update-Database.Designer.cs">
       <DependentUpon>202603180828339_Update-Database.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202603190756308_Update-Database02.cs" />
+    <Compile Include="Migrations\202603190756308_Update-Database02.Designer.cs">
+      <DependentUpon>202603190756308_Update-Database02.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202603221447026_InitialCreate.cs" />
+    <Compile Include="Migrations\202603221447026_InitialCreate.Designer.cs">
+      <DependentUpon>202603221447026_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202603221518256_AddProjectsModels.cs" />
+    <Compile Include="Migrations\202603221518256_AddProjectsModels.Designer.cs">
+      <DependentUpon>202603221518256_AddProjectsModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202603221522550_SyncProjectTables.cs" />
+    <Compile Include="Migrations\202603221522550_SyncProjectTables.Designer.cs">
+      <DependentUpon>202603221522550_SyncProjectTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202603221535519_SyncProjectTables1.cs" />
+    <Compile Include="Migrations\202603221535519_SyncProjectTables1.Designer.cs">
+      <DependentUpon>202603221535519_SyncProjectTables1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\PostRepository.cs" />
+    <Compile Include="Repositories\ProjectCategoryRepository.cs" />
+    <Compile Include="Repositories\ProjectImageRepository.cs" />
+    <Compile Include="Repositories\ProjectRepository.cs" />
     <Compile Include="Repositories\TagRepository.cs" />
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
@@ -85,6 +108,21 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202603180828339_Update-Database.resx">
       <DependentUpon>202603180828339_Update-Database.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202603190756308_Update-Database02.resx">
+      <DependentUpon>202603190756308_Update-Database02.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202603221447026_InitialCreate.resx">
+      <DependentUpon>202603221447026_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202603221518256_AddProjectsModels.resx">
+      <DependentUpon>202603221518256_AddProjectsModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202603221522550_SyncProjectTables.resx">
+      <DependentUpon>202603221522550_SyncProjectTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202603221535519_SyncProjectTables1.resx">
+      <DependentUpon>202603221535519_SyncProjectTables1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

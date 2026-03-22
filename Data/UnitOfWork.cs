@@ -19,6 +19,17 @@ namespace Data
         private ITagRepository tagRepository;
         public ITagRepository TagRepository => tagRepository = tagRepository ?? new TagRepository(context);
 
+
+
+        private IProjectRepository projectRepository;
+        public IProjectRepository ProjectRepository => projectRepository=projectRepository?? new ProjectRepository(context);
+
+        private IProjectCategoryRepository projectCategoryRepository;
+        public IProjectCategoryRepository ProjectCategoryRepository => projectCategoryRepository=projectCategoryRepository??new ProjectCategoryRepository(context);
+
+        private IProjectImageRepository projectImageRepository;
+        public IProjectImageRepository ProjectImageRepository => projectImageRepository=projectImageRepository??new ProjectImageRepository(context);
+
         public void Commit()
         {
             try

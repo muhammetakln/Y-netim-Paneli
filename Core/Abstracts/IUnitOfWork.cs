@@ -7,6 +7,10 @@ namespace Core.Abstracts
     {
         IPostRepository PostRepository { get; }
         ITagRepository TagRepository { get; }
+        IProjectRepository ProjectRepository { get; }
+        IProjectCategoryRepository ProjectCategoryRepository { get; }
+        IProjectImageRepository ProjectImageRepository { get; }
         void Commit();
     }
+    
 }
